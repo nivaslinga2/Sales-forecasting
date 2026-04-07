@@ -1,0 +1,43 @@
+name: Weekly Model Retraining
+
+on:
+  schedule:
+    # Runs every Monday at 03:00 UTC
+    - cron: "0 3 * * 1"
+  workflow_dispatch: # Allow manual trigger from GitHub UI
+
+jobs:
+  retrain:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Download latest data (Kaggle CLI)
+        env:
+          KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
+          KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
+        run: |
+          pip install kaggle
+          kaggle competitions download -c rossmann-store-sales
+          unzip -o rossmann-store-sales.zip
+
+      - name: Run retraining script
+        run: python retrain.py
+
+      - name: Commit updated logs
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add retrain_log.json
+          git diff --cached --quiet || git commit -m "chore: weekly retrain $(date -u +%Y-%m-%d)"
+          git push

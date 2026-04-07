@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.venv/
+*.png
+dataset/
+train_engineered.csv
+train.csv
+test.csv
+store.csv
+retrain_log.json
