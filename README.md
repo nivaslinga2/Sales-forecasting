@@ -88,54 +88,34 @@ Rossmann operates 3,000+ drug stores across Europe. Store managers need accurate
 
 **Why the baseline matters:** *"I always include a naive baseline because a model is only valuable if it beats simple heuristics. My Prophet model cut the error by 73% compared to just repeating last week's sales."*
 
-**Interview talking point:** *"Prophet achieved a 7% MAPE on the holdout set — meaning on average, my predictions are within 7% of actual sales. That's strong enough for real inventory planning decisions."*
-
----
-
-### Phase 5 — Streamlit Dashboard (`app.py`)
-Interactive web app for live demos:
-- **Store selector**: Choose any of 1,115 stores
-- **Forecast horizon**: 30 / 60 / 90 days
-- **Interactive Plotly chart**: Actual vs forecast with 80% confidence bands
-- **Business metrics**: Historical avg, forecasted avg, projected growth %, total volume
+**Interview talking point:** *"Prophet achieved a 7% MAPE on the holdout set — meaning on average, my predictions are within 7% of actual sales. That's stro### Phase 5 — Advanced Dashboard & Analytics (`app.py`)
+Interactive web app upgraded with **Premium Business Intelligence** features:
+- **KPI Summary Header**: Total Forecast Revenue, 92.9% Model Accuracy (MAPE-based), Top Historical Store, and WoW (Week-over-Week) Growth trends.
+- **Data Quality Scorecard**: Real-time audit showing Data Completeness %, Anomaly Detection (3-Sigma outliers), and Historical Range.
+- **Model Explainability**: "Why this forecast?" section using Prophet component decomposition to show the relative impact of Trend, Seasonality, and Holidays.
+- **Interactive Projections**: Plotly chart with **80% and 95% dual confidence bands** for risk assessment.
+- **One-Click Exports**: Download precise forecast tables as CSV for spreadsheet integration.
+- **Branded Executive Reports**: sidebar button to generate a professional **3-page PDF report** with automated branding, benchmarks, and projections.
 
 ```bash
 streamlit run app.py
-# Opens at http://localhost:8501
 ```
-
-**Interview talking point:** *"I built an interactive Streamlit dashboard so stakeholders can select any store, choose a forecast window, and immediately see predictions with confidence intervals — no code required."*
 
 ---
 
-### Phase 6 — Deployment (`api.py`, `Dockerfile`, GitHub Actions)
+### Phase 6 — Deployment & Automation (`api.py`, `email_digest.py`, GitHub Actions)
 
 #### FastAPI Microservice
-```bash
-# Run locally
-uvicorn api:app --reload
+Standardized REST API for real-time predictions.
 
-# Example API call
-POST /predict
-{
-  "store_id": 1,
-  "horizon": 30
-}
+#### Automated Weekly Email Digest (`email_digest.py`)
+- **Self-Service Automation**: Script that runs in the cloud every Monday.
+- **Email Delivery**: Sends an HTML summary with the latest forecast chart and revenue totals to stakeholders via `smtplib`.
 
-# Returns JSON with forecasted_sales, confidence_lower, confidence_upper
-```
-
-#### Docker
-```bash
-docker build -t rossmann-forecast .
-docker run -p 8000:8000 rossmann-forecast
-```
-
-#### CI/CD (GitHub Actions)
-- **`ci.yml`**: Lint → Test API health → Build Docker image (on every push/PR)
-- **`retrain.yml`**: Cron every Monday at 03:00 UTC → Downloads fresh data → Retrains → Logs metrics → Auto-commits results
-
-**Interview talking point:** *"I containerized the model with Docker and set up a CI pipeline that builds and tests on every push. There's also an automated weekly retraining workflow via GitHub Actions cron that pulls fresh data, retrains, and commits the performance log — so the model stays current without manual intervention."*
+#### CI/CD & Cron Workflows
+- **`ci.yml`**: Build and Test pipeline.
+- **`retrain.yml`**: Weekly model retraining.
+- **`weekly_digest.yml`**: **NEW** Automated email report trigger via GitHub Actions cron.
 
 ---
 
@@ -146,7 +126,9 @@ Sales forecasting/
 ├── feature_engineering.py    # Phase 2: Lag, rolling, calendar features
 ├── model_training.py         # Phase 3: SARIMA + Prophet training
 ├── phase4_evaluation.py      # Phase 4: Baseline vs model comparison
-├── app.py                    # Phase 5: Streamlit dashboard
+├── app.py                    # Phase 5: Advanced BI Dashboard
+├── report_generator.py       # NEW: PDF Executive Report Engine
+├── email_digest.py           # NEW: Automated Email Summary Script
 ├── api.py                    # Phase 6: FastAPI prediction endpoint
 ├── retrain.py                # Automated retraining script
 ├── Dockerfile                # Container definition
@@ -154,7 +136,8 @@ Sales forecasting/
 ├── .github/
 │   └── workflows/
 │       ├── ci.yml            # CI pipeline
-│       └── retrain.yml       # Weekly cron retraining
+│       ├── retrain.yml       # Weekly cron retraining
+│       └── weekly_digest.yml # Weekly email automation
 ├── train.csv                 # Raw training data (1M+ rows)
 ├── store.csv                 # Store metadata
 ├── test.csv                  # Kaggle test set
