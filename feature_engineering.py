@@ -62,8 +62,8 @@ def feature_engineering():
         lambda x: x.shift(1).rolling(window=7, min_periods=1).std()
     )
     
-    # Fill NAs from lags and rolling with 0 temporarily or drop them
-    df.fillna({'Sales_Lag7': 0, 'Sales_Lag14': 0, 'Sales_Roll7_Std': 0}, inplace=True)
+    # Fill NAs from lags and rolling with 0
+    df.fillna({'Sales_Lag7': 0, 'Sales_Lag14': 0, 'Sales_Roll7_Mean': 0, 'Sales_Roll7_Std': 0}, inplace=True)
     
     print("Feature Engineering complete!")
     print("\nSample of engineered dataset (Columns):")
