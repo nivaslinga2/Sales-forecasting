@@ -88,7 +88,11 @@ Rossmann operates 3,000+ drug stores across Europe. Store managers need accurate
 
 **Why the baseline matters:** *"I always include a naive baseline because a model is only valuable if it beats simple heuristics. My Prophet model cut the error by 73% compared to just repeating last week's sales."*
 
-**Interview talking point:** *"Prophet achieved a 7% MAPE on the holdout set — meaning on average, my predictions are within 7% of actual sales. That's stro### Phase 5 — Advanced Dashboard & Analytics (`app.py`)
+**Interview talking point:** *"Prophet achieved a 7% MAPE on the holdout set — meaning on average, my predictions are within 7% of actual sales. That's strong enough for real inventory planning decisions."*
+
+---
+
+### Phase 5 — Advanced Dashboard & Analytics (`app.py`)
 Interactive web app upgraded with **Premium Business Intelligence** features:
 - **KPI Summary Header**: Total Forecast Revenue, 92.9% Model Accuracy (MAPE-based), Top Historical Store, and WoW (Week-over-Week) Growth trends.
 - **Data Quality Scorecard**: Real-time audit showing Data Completeness %, Anomaly Detection (3-Sigma outliers), and Historical Range.
