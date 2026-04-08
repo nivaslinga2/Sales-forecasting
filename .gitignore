@@ -1,10 +1,7 @@
-__pycache__/
-*.pyc
-.venv/
+*.pdf
 *.png
-dataset/
-train_engineered.csv
-train.csv
-test.csv
-store.csv
-retrain_log.json
+__pycache__/
+.DS_Store
+*.pyc
+digest_chart.png
+Store_*_Report.pdf
